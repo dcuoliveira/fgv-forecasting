@@ -1,0 +1,287 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+# Exercise 4
+
+**(1)** Test for autocorrelation on the series of interest:
+> **(a)** Autocorrelation function (ACF)
+
+> **(b)** Partial autocorrelation function (PACF)
+
+**(2)** Test for stationarity of the process
+
+**(3)** Find the optimal p and q for the ARMA(p,q) model:
+    
+**(4)** Run a model diagnostic on the residuals of the ARMA(p,q):
+> **(a)** Autocorrelation function (ACF)
+
+> **(b)** Partial autocorrelation function (PACF)
+
+> **(c)** Serial correlation tests:
+>> **(i)** Breusch-Godfrey test
+
+>> **(ii)** ARCH test
+
+**(5)** Run forecasts and evaluate the results:
+> **(a)** 1-step ahead and evaluate using RMSE and MAE
+
+> **(b)** 2-steps ahead and evaluate using RMSE and MAE
+
+```{r}
+rm(list=ls())
+library(readr)
+library(here)
+library(aTSA)
+library(data.table)
+library(xtable)
+library(dplyr)
+library(Hmisc)
+library(lmtest)
+library(FinTS)
+library(Hmisc)
+
+simu_df = read_delim(here('src', 'data', 'simu_data_lecture5.csv'), ";", escape_double = FALSE, trim_ws = TRUE)
+#head(simu_df)
+y1 = simu_df$y1
+```
+
+## **(1)** Test for autocorrelation on the series of interest:
+
+Assuming a stochastic process of the form $\{y_t\}_{t=1}^{T}$, the autocorrelation function is simply given by:
+
+$
+Cov(y_t, y_{t-k}) = \gamma(k)
+$
+
+Therefore, the autocorrelation function (ACF) is defined as
+
+$
+AC(k) = \frac{\gamma(k)}{\gamma(0)} = \frac{Cov(y_t, y_{t-k})}{\sqrt{Var(y_t)}\sqrt{Var(y_{t-k})}}
+$
+
+and the partial autocorrelation function (PACF) is defined as the correlation between $y_t$ and $y_{t-k}$ conditional on $Y_{-t, -(t-k)}$, which is the set of all available $y_i$ except for $y_t$ and $y_{t-k}$. This means that we can estimate the PACF using the LRM:
+
+$
+y_t = \rho_k y_{t-k} + \epsilon_t \quad where \quad PAC(k) = \rho_k
+$
+
+### **(a)** Autocorrelation function (ACF)
+
+### +
+
+### **(b)** Partial autocorrelation function (PACF)
+
+```{r}
+par(mfrow=c(2,1))
+acf.inven <- list('acf' = acf(y1, lag.max = 15, main=" ACF for y1"),
+                  'pacf' = pacf(y1, lag.max = 15, main=" PACF for y1"))
+```
+
+Note that the AC function decays almost exponentially, while the PAC function has two peaks and then vanishes. This present evidence that our process is probably an AR(2) one.
+
+
+```{r}
+
+```
+
+## **(2)** Test for stationarity of the process
+
+#### Dickey-Fuller test
+
+To illustrate the Dickey-Fuller test, lets consider the following model:
+
+$
+y_t = T_t + z_t\\
+T_t = \nu_0 + \nu_1 t\\
+z_t = \rho z_{t-1} + \epsilon_t \quad \epsilon_t \sim WN(0, \sigma^2)
+$
+
+where $T_t$ is a deterministic linear trend. We have that, if $\rho < 1$, then $y_t$ is $I(0)$ about the deterministic trend, whereas if $\rho=1$ and $\nu_1=0$, then $z_t$ is a random walk and $y_t$ in $I(1)$ with drift.
+
+Suppose $\nu_0=\nu_1=0 \implies T_t=0$, and therefore:
+
+$
+y_t = z_t = \rho z_{t-1} + \epsilon_t \quad (**)
+$
+
+We are interested in testing for unit root processes, that is, if $\rho=1$, which implies that $y_t$ in $I(1)$. We can define the hypotheses of intereset in the following way:
+
+$
+H_0: \rho=1\\
+H_1: |\rho|<1
+$
+
+The problem is that, to construct the test statistics to test the above hypotheses we would need the sample moments of $y_t$, which under the null is a unit root process, but unfortunatly they do not converge to fixed constants. Dickey and Fuller (1979) derived statistics that converge in distribution to the sample moments of $y_t$ under the alternative, while Phillips (1978) derived sample statistics that also converge in probability for the null. The limiting distribution for the t-test($\rho=1$) is called the Dickey-Fueller distribution and it does not have a closed form representation.
+
+Its important to note that the DF distributuon is sensitive to the form of the deterministic component. There are two most common representations for this deterministic component:
+
+**(1)** Constant only: The test model is given by:
+
+$
+\Delta y_t = \nu_0 + (\rho-1) y_{t-1} + \epsilon_t
+$
+
+with the following hypotheses:
+
+$
+H_0: \rho=1 \quad \nu_0=0\\
+H_1: |\rho|<1 \quad \nu_0 \neq 0
+$
+
+**(2)** Constant and time trend: The test model is given by:
+
+$
+\Delta y_t = \nu_0 + \nu_1 t + (\rho-1) y_{t-1} + \epsilon_t
+$
+
+with the following hypotheses:
+
+$
+H_0: \rho=1 \quad \nu_1=0\\
+H_1: |\rho|<1 \quad \nu_1 \neq 0
+$
+
+
+Furthermore, the Augmented Dickey-Fuller test expands the above model (**) to account for more autoregressive terms.
+
+
+```{r}
+adf.test(y1)
+```
+
+The ADF test reject the null hypothesis of unit root process for all the possible specifications. Therefore, we have evidence that our process should be stationary.
+
+
+```{r}
+
+```
+
+## **(3)** Find the optimal p and q for the ARMA(p,q) model:
+
+Recall that the AIC and BIC are measures of model fitness defined as:
+
+$
+AIC = 2k - 2\log(\hat{L})\\
+BIC = k\log(T)-2\log(\hat{L})
+$
+
+where $\hat{L}$ is the maximum value that the model likelihood function achieves, $k$ is the number of variables in the model, and $T$ is the number of observations.
+
+We can use both AIC and BIC to find the best p and q parameters for the ARMA(p,q) model.
+
+```{r}
+ic.inven <- list('AIC' = data.table(), 'BIC' = data.table())
+for (ar.lag in 0:11) {
+  arma.stat <- rep(0, 6)
+  for (ma.lag in 0:2) {
+    arma.fit <- arima(y1, order = c(ar.lag, 0, ma.lag))
+    # arma.fit
+    # AIC
+    arma.stat[ma.lag + 1] <- arma.fit$aic
+    # BIC
+    arma.stat[ma.lag + 4] <- -2 * arma.fit$loglik + (ar.lag + ma.lag) * log(length(y1))
+  }
+  ic.inven$AIC <- rbindlist(list(ic.inven$AIC, data.table(t(arma.stat[1:3]))))
+  ic.inven$BIC <- rbindlist(list(ic.inven$BIC, data.table(t(arma.stat[4:6]))))
+}
+setnames(ic.inven$AIC, c('MA0', 'MA1', 'MA2'))
+ic.inven$AIC[, AR := 0:11]
+setnames(ic.inven$BIC, c('MA0', 'MA1', 'MA2'))
+ic.inven$BIC[, AR := (0:11)]
+
+
+BIC_selec.mat <- rbind(ic.inven$BIC[, AR := (0:11)])
+print(xtable(BIC_selec.mat))
+
+```
+
+Using both of the information criterion we see that the optimal parameters would be ARMA(2,0).
+
+```{r}
+
+```
+
+## **(4)** Run a model diagnostic on the residuals of the ARMA(p,q):
+### **(a)** Autocorrelation function (ACF)
+### + 
+### **(b)** Partial autocorrelation function (PACF)
+
+
+```{r}
+arma_y1 = arima(simu_df$y1, order = c(2, 0, 0))
+
+par(mfrow=c(2,1))
+acf.inven = list('acf' = acf(arma_y1$residuals, lag.max = 15, main=" ACF for ARMA(2,0) residuals"),
+                  'pacf' = pacf(arma_y1$residuals, lag.max = 15, main=" PACF for ARMA(2,0) residuals"))
+```
+
+
+Using the correct specification of the ARMA process we can see that the PACF has no significant terms. Furthermore, the ACF rapidly vanishes, which is further evidence of proper model specification.
+
+```{r}
+```
+
+## **(c)** Serial correlation tests:
+#### Breusch-Godfrey test
+
+
+```{r}
+df_bg = as.data.frame(cbind(arma_y1$residuals, Lag(arma_y1$residuals, 1), Lag(arma_y1$residuals, 2)))
+colnames(df_bg) = c('e', 'e_l1', 'e_l2')
+summary(lm(e ~ e_l1 + e_l2, data = df_bg))
+```
+For both the first and second lag of the residuals of the ARMA(2,0) model we can raise the significance level up to .90 without rejecting the null hypothesis of uncorrelated error terms. Therefore, we have evidence of no serial correltaion on the ARMA model.
+
+```{r}
+```
+
+#### ARCH test
+
+```{r}
+ArchTest(arma_y1$residuals, lags = 1)
+```
+
+The statistics of the ARCH test says that we can increase the significance level up to 96% and still not reject the null hypothesis of no ARCH effect. Therefore, we have evidence that the residuals of our ARMA(2,0) model follows an ARCH process.
+
+```{r}
+
+```
+
+## **(5)** Run forecasts and evaluate the results:
+### **(a)** 1-step ahead and evaluate using MSE
+
+```{r}
+forecas_simu = list()
+forecas_simu$y1$dynamic = as.numeric(predict(arma_y1,
+                                                  n.ahead = 16)$pred)
+forecas_simu$y1$static = rep(0, 16)
+for (c in 1:16) {
+  simu_fit = arima(y1[1:(71 + c)], order = c(2, 0, 0))
+  forecas_simu$y1$static[c] = predict(simu_fit, n.ahead = 1)$pred
+}
+
+
+mse_dynamic = mean((forecas_simu$y1$dynamic - y1[71:(70+16)])^2)
+mse_static = mean((forecas_simu$y1$static - y1[71:(70+16)])^2)
+print(paste0('MSE dynamic: ', mse_dynamic, ' MSE static: ', mse_static))
+```
+
+
+### **(b)** 2-steps ahead and evaluate using MSE
+
+
+```{r}
+forecas_simu$y1$multi = rep(0, 16)
+for (c in 1:16) {
+  simu_fit = arima(y1[1:(70 + c)], order = c(2, 0, 0))
+  forecas_simu$y1$multi[c] = predict(simu_fit, n.ahead = 2)$pred[2]
+}
+
+mse_multi = mean((forecas_simu$y1$multi - y1[71:(70+16)])^2)
+print(paste0('MSE multi step (2): ', mse_multi))
+```
+

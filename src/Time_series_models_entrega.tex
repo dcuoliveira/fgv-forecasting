@@ -147,18 +147,7 @@
 \end{quote}
 
 \begin{quote}
-\textbf{(c)} Heteroskedasticity tests: \textgreater{} \textbf{(i)} White
-test
-\end{quote}
-
-\begin{quote}
-\begin{quote}
-\textbf{(ii)} Breusch-Pagan-Godfrey test
-\end{quote}
-\end{quote}
-
-\begin{quote}
-\textbf{(d)} Serial correlation tests: \textgreater{} \textbf{(i)}
+\textbf{(c)} Serial correlation tests: \textgreater{} \textbf{(i)}
 Breusch-Godfrey test
 \end{quote}
 
@@ -177,23 +166,627 @@ Breusch-Godfrey test
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{plot}\NormalTok{(cars)}
+\FunctionTok{rm}\NormalTok{(}\AttributeTok{list=}\FunctionTok{ls}\NormalTok{())}
+\FunctionTok{library}\NormalTok{(readr)}
+\FunctionTok{library}\NormalTok{(here)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Time_series_models_entrega_files/figure-latex/unnamed-chunk-1-1.pdf}
+\begin{verbatim}
+## Warning: package 'here' was built under R version 3.6.3
+\end{verbatim}
 
-Add a new chunk by clicking the \emph{Insert Chunk} button on the
-toolbar or by pressing \emph{Ctrl+Alt+I}.
+\begin{verbatim}
+## here() starts at C:/Users/Daniel/Desktop/Daniel/codes/python_R/FGV_Forecasing
+\end{verbatim}
 
-When you save the notebook, an HTML file containing the code and output
-will be saved alongside it (click the \emph{Preview} button or press
-\emph{Ctrl+Shift+K} to preview the HTML file).
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(aTSA)}
+\end{Highlighting}
+\end{Shaded}
 
-The preview shows you a rendered HTML copy of the contents of the
-editor. Consequently, unlike \emph{Knit}, \emph{Preview} does not run
-any R code chunks. Instead, the output of the chunk when it was last run
-in the editor is displayed.
+\begin{verbatim}
+## 
+## Attaching package: 'aTSA'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:graphics':
+## 
+##     identify
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(data.table)}
+\FunctionTok{library}\NormalTok{(xtable)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'xtable' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:data.table':
+## 
+##     between, first, last
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(Hmisc)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'Hmisc' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: survival
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'survival' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Formula
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'Formula' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
+\begin{verbatim}
+## Registered S3 methods overwritten by 'ggplot2':
+##   method         from 
+##   [.quosures     rlang
+##   c.quosures     rlang
+##   print.quosures rlang
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Hmisc'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:dplyr':
+## 
+##     src, summarize
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:xtable':
+## 
+##     label, label<-
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     format.pval, units
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lmtest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'lmtest' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: zoo
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'zoo'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     as.Date, as.Date.numeric
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(FinTS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'FinTS' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(Hmisc)}
+
+\NormalTok{simu\_df }\OtherTok{=} \FunctionTok{read\_delim}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{\textquotesingle{}src\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}data\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}simu\_data\_lecture5.csv\textquotesingle{}}\NormalTok{), }\StringTok{";"}\NormalTok{, }\AttributeTok{escape\_double =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{trim\_ws =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X1' [1]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   X1 = col_double(),
+##   y1 = col_double(),
+##   y2 = col_double(),
+##   y3 = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#head(simu\_df)}
+\NormalTok{y1 }\OtherTok{=}\NormalTok{ simu\_df}\SpecialCharTok{$}\NormalTok{y1}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{test-for-autocorrelation-on-the-series-of-interest}{%
+\subsection{\texorpdfstring{\textbf{(1)} Test for autocorrelation on the
+series of
+interest:}{(1) Test for autocorrelation on the series of interest:}}\label{test-for-autocorrelation-on-the-series-of-interest}}
+
+Assuming a stochastic process of the form \(\{y_t\}_{t=1}^{T}\), the
+autocorrelation function is simply given by:
+
+\$ Cov(y\_t, y\_\{t-k\}) = \gamma(k) \$
+
+Therefore, the autocorrelation function (ACF) is defined as
+
+\$ AC(k) = \frac{\gamma(k)}{\gamma(0)} =
+\frac{Cov(y_t, y_{t-k})}{\sqrt{Var(y_t)}\sqrt{Var(y_{t-k})}} \$
+
+and the partial autocorrelation function (PACF) is defined as the
+correlation between \(y_t\) and \(y_{t-k}\) conditional on
+\(Y_{-t, -(t-k)}\), which is the set of all available \(y_i\) except for
+\(y_t\) and \(y_{t-k}\). This means that we can estimate the PACF using
+the LRM:
+
+\$ y\_t = \rho\emph{k y}\{t-k\} + \epsilon\_t \quad where \quad PAC(k) =
+\rho\_k \$
+
+\hypertarget{a-autocorrelation-function-acf}{%
+\subsubsection{\texorpdfstring{\textbf{(a)} Autocorrelation function
+(ACF)}{(a) Autocorrelation function (ACF)}}\label{a-autocorrelation-function-acf}}
+
+\hypertarget{section}{%
+\subsubsection{+}\label{section}}
+
+\hypertarget{b-partial-autocorrelation-function-pacf}{%
+\subsubsection{\texorpdfstring{\textbf{(b)} Partial autocorrelation
+function
+(PACF)}{(b) Partial autocorrelation function (PACF)}}\label{b-partial-autocorrelation-function-pacf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{acf.inven }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}acf\textquotesingle{}} \OtherTok{=} \FunctionTok{acf}\NormalTok{(y1, }\AttributeTok{lag.max =} \DecValTok{15}\NormalTok{, }\AttributeTok{main=}\StringTok{" ACF for y1"}\NormalTok{),}
+                  \StringTok{\textquotesingle{}pacf\textquotesingle{}} \OtherTok{=} \FunctionTok{pacf}\NormalTok{(y1, }\AttributeTok{lag.max =} \DecValTok{15}\NormalTok{, }\AttributeTok{main=}\StringTok{" PACF for y1"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Time_series_models_entrega_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+Note that the AC function decays almost exponentially, while the PAC
+function has two peaks and then vanishes. This present evidence that our
+process is probably an AR(2) one.
+
+\hypertarget{test-for-stationarity-of-the-process}{%
+\subsection{\texorpdfstring{\textbf{(2)} Test for stationarity of the
+process}{(2) Test for stationarity of the process}}\label{test-for-stationarity-of-the-process}}
+
+\hypertarget{dickey-fuller-test}{%
+\paragraph{Dickey-Fuller test}\label{dickey-fuller-test}}
+
+To illustrate the Dickey-Fuller test, lets consider the following model:
+
+\$ y\_t = T\_t + z\_t\textbackslash{} T\_t = \nu\_0 + \nu\emph{1
+t\textbackslash{} z\_t = \rho z}\{t-1\} + \epsilon\_t \quad \epsilon\_t
+\sim WN(0, \sigma\^{}2) \$
+
+where \(T_t\) is a deterministic linear trend. We have that, if
+\(\rho < 1\), then \(y_t\) is \(I(0)\) about the deterministic trend,
+whereas if \(\rho=1\) and \(\nu_1=0\), then \(z_t\) is a random walk and
+\(y_t\) in \(I(1)\) with drift.
+
+Suppose \(\nu_0=\nu_1=0 \implies T_t=0\), and therefore:
+
+\$ y\_t = z\_t = \rho z\_\{t-1\} + \epsilon\_t \quad (**) \$
+
+We are interested in testing for unit root processes, that is, if
+\(\rho=1\), which implies that \(y_t\) in \(I(1)\). We can define the
+hypotheses of intereset in the following way:
+
+\$ H\_0: \rho=1\textbackslash{} H\_1: \textbar{}\rho\textbar\textless1
+\$
+
+The problem is that, to construct the test statistics to test the above
+hypotheses we would need the sample moments of \(y_t\), which under the
+null is a unit root process, but unfortunatly they do not converge to
+fixed constants. Dickey and Fuller (1979) derived statistics that
+converge in distribution to the sample moments of \(y_t\) under the
+alternative, while Phillips (1978) derived sample statistics that also
+converge in probability for the null. The limiting distribution for the
+t-test(\(\rho=1\)) is called the Dickey-Fueller distribution and it does
+not have a closed form representation.
+
+Its important to note that the DF distributuon is sensitive to the form
+of the deterministic component. There are two most common
+representations for this deterministic component:
+
+\textbf{(1)} Constant only: The test model is given by:
+
+\$ \Delta y\_t = \nu\emph{0 + (\rho-1) y}\{t-1\} + \epsilon\_t \$
+
+with the following hypotheses:
+
+\$ H\_0: \rho=1 \quad \nu\_0=0\textbackslash{} H\_1:
+\textbar{}\rho\textbar\textless1 \quad \nu\_0 \neq 0 \$
+
+\textbf{(2)} Constant and time trend: The test model is given by:
+
+\$ \Delta y\_t = \nu\_0 + \nu\emph{1 t + (\rho-1) y}\{t-1\} +
+\epsilon\_t \$
+
+with the following hypotheses:
+
+\$ H\_0: \rho=1 \quad \nu\_1=0\textbackslash{} H\_1:
+\textbar{}\rho\textbar\textless1 \quad \nu\_1 \neq 0 \$
+
+Furthermore, the Augmented Dickey-Fuller test expands the above model
+(**) to account for more autoregressive terms.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{adf.test}\NormalTok{(y1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Augmented Dickey-Fuller Test 
+## alternative: stationary 
+##  
+## Type 1: no drift no trend 
+##      lag    ADF p.value
+## [1,]   0 -17.58    0.01
+## [2,]   1 -10.75    0.01
+## [3,]   2  -9.99    0.01
+## [4,]   3  -8.99    0.01
+## [5,]   4  -8.40    0.01
+## [6,]   5  -7.89    0.01
+## Type 2: with drift no trend 
+##      lag    ADF p.value
+## [1,]   0 -17.62    0.01
+## [2,]   1 -10.78    0.01
+## [3,]   2 -10.01    0.01
+## [4,]   3  -9.01    0.01
+## [5,]   4  -8.42    0.01
+## [6,]   5  -7.91    0.01
+## Type 3: with drift and trend 
+##      lag    ADF p.value
+## [1,]   0 -17.74    0.01
+## [2,]   1 -10.87    0.01
+## [3,]   2 -10.14    0.01
+## [4,]   3  -9.15    0.01
+## [5,]   4  -8.56    0.01
+## [6,]   5  -8.08    0.01
+## ---- 
+## Note: in fact, p.value = 0.01 means p.value <= 0.01
+\end{verbatim}
+
+The ADF test reject the null hypothesis of unit root process for all the
+possible specifications. Therefore, we have evidence that our process
+should be stationary.
+
+\hypertarget{find-the-optimal-p-and-q-for-the-armapq-model}{%
+\subsection{\texorpdfstring{\textbf{(3)} Find the optimal p and q for
+the ARMA(p,q)
+model:}{(3) Find the optimal p and q for the ARMA(p,q) model:}}\label{find-the-optimal-p-and-q-for-the-armapq-model}}
+
+Recall that the AIC and BIC are measures of model fitness defined as:
+
+\$ AIC = 2k - 2\log(\hat{L})\textbackslash{} BIC =
+k\log(T)-2\log(\hat{L}) \$
+
+where \(\hat{L}\) is the maximum value that the model likelihood
+function achieves, \(k\) is the number of variables in the model, and
+\(T\) is the number of observations.
+
+We can use both AIC and BIC to find the best p and q parameters for the
+ARMA(p,q) model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ic.inven }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}AIC\textquotesingle{}} \OtherTok{=} \FunctionTok{data.table}\NormalTok{(), }\StringTok{\textquotesingle{}BIC\textquotesingle{}} \OtherTok{=} \FunctionTok{data.table}\NormalTok{())}
+\ControlFlowTok{for}\NormalTok{ (ar.lag }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\DecValTok{11}\NormalTok{) \{}
+\NormalTok{  arma.stat }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{6}\NormalTok{)}
+  \ControlFlowTok{for}\NormalTok{ (ma.lag }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\DecValTok{2}\NormalTok{) \{}
+\NormalTok{    arma.fit }\OtherTok{\textless{}{-}} \FunctionTok{arima}\NormalTok{(y1, }\AttributeTok{order =} \FunctionTok{c}\NormalTok{(ar.lag, }\DecValTok{0}\NormalTok{, ma.lag))}
+    \CommentTok{\# arma.fit}
+    \CommentTok{\# AIC}
+\NormalTok{    arma.stat[ma.lag }\SpecialCharTok{+} \DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ arma.fit}\SpecialCharTok{$}\NormalTok{aic}
+    \CommentTok{\# BIC}
+\NormalTok{    arma.stat[ma.lag }\SpecialCharTok{+} \DecValTok{4}\NormalTok{] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ arma.fit}\SpecialCharTok{$}\NormalTok{loglik }\SpecialCharTok{+}\NormalTok{ (ar.lag }\SpecialCharTok{+}\NormalTok{ ma.lag) }\SpecialCharTok{*} \FunctionTok{log}\NormalTok{(}\FunctionTok{length}\NormalTok{(y1))}
+\NormalTok{  \}}
+\NormalTok{  ic.inven}\SpecialCharTok{$}\NormalTok{AIC }\OtherTok{\textless{}{-}} \FunctionTok{rbindlist}\NormalTok{(}\FunctionTok{list}\NormalTok{(ic.inven}\SpecialCharTok{$}\NormalTok{AIC, }\FunctionTok{data.table}\NormalTok{(}\FunctionTok{t}\NormalTok{(arma.stat[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{]))))}
+\NormalTok{  ic.inven}\SpecialCharTok{$}\NormalTok{BIC }\OtherTok{\textless{}{-}} \FunctionTok{rbindlist}\NormalTok{(}\FunctionTok{list}\NormalTok{(ic.inven}\SpecialCharTok{$}\NormalTok{BIC, }\FunctionTok{data.table}\NormalTok{(}\FunctionTok{t}\NormalTok{(arma.stat[}\DecValTok{4}\SpecialCharTok{:}\DecValTok{6}\NormalTok{]))))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in log(s2): NaNs produced
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+
+## Warning in arima(y1, order = c(ar.lag, 0, ma.lag)): possible convergence
+## problem: optim gave code = 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{setnames}\NormalTok{(ic.inven}\SpecialCharTok{$}\NormalTok{AIC, }\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}MA0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}MA1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}MA2\textquotesingle{}}\NormalTok{))}
+\NormalTok{ic.inven}\SpecialCharTok{$}\NormalTok{AIC[, AR }\SpecialCharTok{:}\ErrorTok{=} \DecValTok{0}\SpecialCharTok{:}\DecValTok{11}\NormalTok{]}
+\FunctionTok{setnames}\NormalTok{(ic.inven}\SpecialCharTok{$}\NormalTok{BIC, }\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}MA0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}MA1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}MA2\textquotesingle{}}\NormalTok{))}
+\NormalTok{ic.inven}\SpecialCharTok{$}\NormalTok{BIC[, AR }\SpecialCharTok{:}\ErrorTok{=}\NormalTok{ (}\DecValTok{0}\SpecialCharTok{:}\DecValTok{11}\NormalTok{)]}
+
+
+\NormalTok{BIC\_selec.mat }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(ic.inven}\SpecialCharTok{$}\NormalTok{BIC[, }\AttributeTok{AR :=}\NormalTok{ (}\DecValTok{0}\SpecialCharTok{:}\DecValTok{11}\NormalTok{)])}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{xtable}\NormalTok{(BIC\_selec.mat))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## % latex table generated in R 3.6.1 by xtable 1.8-4 package
+## % Sun Nov 15 09:35:50 2020
+## \begin{table}[ht]
+## \centering
+## \begin{tabular}{rrrrr}
+##   \hline
+##  & MA0 & MA1 & MA2 & AR \\ 
+##   \hline
+## 1 & 1797.47 & 1764.61 & 1715.23 &   0 \\ 
+##   2 & 1740.89 & 1714.47 & 1710.97 &   1 \\ 
+##   3 & 1701.19 & 1707.47 & 1713.36 &   2 \\ 
+##   4 & 1707.49 & 1713.71 & 1719.76 &   3 \\ 
+##   5 & 1713.42 & 1717.39 & 1723.73 &   4 \\ 
+##   6 & 1719.82 & 1723.88 & 1731.81 &   5 \\ 
+##   7 & 1726.16 & 1732.34 & 1734.21 &   6 \\ 
+##   8 & 1731.79 & 1738.01 & 1741.21 &   7 \\ 
+##   9 & 1737.86 & 1744.26 & 1747.01 &   8 \\ 
+##   10 & 1744.26 & 1748.03 & 1749.79 &   9 \\ 
+##   11 & 1749.69 & 1755.54 & 1759.78 &  10 \\ 
+##   12 & 1754.60 & 1760.87 & 1762.39 &  11 \\ 
+##    \hline
+## \end{tabular}
+## \end{table}
+\end{verbatim}
+
+Using both of the information criterion we see that the optimal
+parameters would be ARMA(2,0).
+
+\hypertarget{run-a-model-diagnostic-on-the-residuals-of-the-armapq}{%
+\subsection{\texorpdfstring{\textbf{(4)} Run a model diagnostic on the
+residuals of the
+ARMA(p,q):}{(4) Run a model diagnostic on the residuals of the ARMA(p,q):}}\label{run-a-model-diagnostic-on-the-residuals-of-the-armapq}}
+
+\hypertarget{a-autocorrelation-function-acf-1}{%
+\subsubsection{\texorpdfstring{\textbf{(a)} Autocorrelation function
+(ACF)}{(a) Autocorrelation function (ACF)}}\label{a-autocorrelation-function-acf-1}}
+
+\hypertarget{section-1}{%
+\subsubsection{+}\label{section-1}}
+
+\hypertarget{b-partial-autocorrelation-function-pacf-1}{%
+\subsubsection{\texorpdfstring{\textbf{(b)} Partial autocorrelation
+function
+(PACF)}{(b) Partial autocorrelation function (PACF)}}\label{b-partial-autocorrelation-function-pacf-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{arma\_y1 }\OtherTok{=} \FunctionTok{arima}\NormalTok{(simu\_df}\SpecialCharTok{$}\NormalTok{y1, }\AttributeTok{order =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{acf.inven }\OtherTok{=} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}acf\textquotesingle{}} \OtherTok{=} \FunctionTok{acf}\NormalTok{(arma\_y1}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{lag.max =} \DecValTok{15}\NormalTok{, }\AttributeTok{main=}\StringTok{" ACF for ARMA(2,0) residuals"}\NormalTok{),}
+                  \StringTok{\textquotesingle{}pacf\textquotesingle{}} \OtherTok{=} \FunctionTok{pacf}\NormalTok{(arma\_y1}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{lag.max =} \DecValTok{15}\NormalTok{, }\AttributeTok{main=}\StringTok{" PACF for ARMA(2,0) residuals"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Time_series_models_entrega_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+Using the correct specification of the ARMA process we can see that the
+PACF has no significant terms. Furthermore, the ACF rapidly vanishes,
+which is further evidence of proper model specification.
+
+\hypertarget{c-serial-correlation-tests}{%
+\subsection{\texorpdfstring{\textbf{(c)} Serial correlation
+tests:}{(c) Serial correlation tests:}}\label{c-serial-correlation-tests}}
+
+\hypertarget{breusch-godfrey-test}{%
+\paragraph{Breusch-Godfrey test}\label{breusch-godfrey-test}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_bg }\OtherTok{=} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(arma\_y1}\SpecialCharTok{$}\NormalTok{residuals, }\FunctionTok{Lag}\NormalTok{(arma\_y1}\SpecialCharTok{$}\NormalTok{residuals, }\DecValTok{1}\NormalTok{), }\FunctionTok{Lag}\NormalTok{(arma\_y1}\SpecialCharTok{$}\NormalTok{residuals, }\DecValTok{2}\NormalTok{)))}
+\FunctionTok{colnames}\NormalTok{(df\_bg) }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}e\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}e\_l1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}e\_l2\textquotesingle{}}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(e }\SpecialCharTok{\textasciitilde{}}\NormalTok{ e\_l1 }\SpecialCharTok{+}\NormalTok{ e\_l2, }\AttributeTok{data =}\NormalTok{ df\_bg))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = e ~ e_l1 + e_l2, data = df_bg)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8139 -0.6772  0.0554  0.6647  2.6477 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept) -0.001247   0.040529  -0.031    0.975
+## e_l1         0.004706   0.040962   0.115    0.909
+## e_l2        -0.003081   0.041048  -0.075    0.940
+## 
+## Residual standard error: 0.9911 on 595 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  3.155e-05,  Adjusted R-squared:  -0.00333 
+## F-statistic: 0.009387 on 2 and 595 DF,  p-value: 0.9907
+\end{verbatim}
+
+For both the first and second lag of the residuals of the ARMA(2,0)
+model we can raise the significance level up to .90 without rejecting
+the null hypothesis of uncorrelated error terms. Therefore, we have
+evidence of no serial correltaion on the ARMA model.
+
+\hypertarget{arch-test}{%
+\paragraph{ARCH test}\label{arch-test}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ArchTest}\NormalTok{(arma\_y1}\SpecialCharTok{$}\NormalTok{residuals, }\AttributeTok{lags =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  ARCH LM-test; Null hypothesis: no ARCH effects
+## 
+## data:  arma_y1$residuals
+## Chi-squared = 0.0015185, df = 1, p-value = 0.9689
+\end{verbatim}
+
+The statistics of the ARCH test says that we can increase the
+significance level up to 96\% and still not reject the null hypothesis
+of no ARCH effect. Therefore, we have evidence that the residuals of our
+ARMA(2,0) model follows an ARCH process.
+
+\hypertarget{run-forecasts-and-evaluate-the-results}{%
+\subsection{\texorpdfstring{\textbf{(5)} Run forecasts and evaluate the
+results:}{(5) Run forecasts and evaluate the results:}}\label{run-forecasts-and-evaluate-the-results}}
+
+\hypertarget{a-1-step-ahead-and-evaluate-using-mse}{%
+\subsubsection{\texorpdfstring{\textbf{(a)} 1-step ahead and evaluate
+using
+MSE}{(a) 1-step ahead and evaluate using MSE}}\label{a-1-step-ahead-and-evaluate-using-mse}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{forecas\_simu }\OtherTok{=} \FunctionTok{list}\NormalTok{()}
+\NormalTok{forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{dynamic }\OtherTok{=} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{predict}\NormalTok{(arma\_y1,}
+                                                  \AttributeTok{n.ahead =} \DecValTok{16}\NormalTok{)}\SpecialCharTok{$}\NormalTok{pred)}
+\NormalTok{forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{static }\OtherTok{=} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{16}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (c }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{16}\NormalTok{) \{}
+\NormalTok{  simu\_fit }\OtherTok{=} \FunctionTok{arima}\NormalTok{(y1[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(}\DecValTok{71} \SpecialCharTok{+}\NormalTok{ c)], }\AttributeTok{order =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\NormalTok{  forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{static[c] }\OtherTok{=} \FunctionTok{predict}\NormalTok{(simu\_fit, }\AttributeTok{n.ahead =} \DecValTok{1}\NormalTok{)}\SpecialCharTok{$}\NormalTok{pred}
+\NormalTok{\}}
+
+
+\NormalTok{mse\_dynamic }\OtherTok{=} \FunctionTok{mean}\NormalTok{((forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{dynamic }\SpecialCharTok{{-}}\NormalTok{ y1[}\DecValTok{71}\SpecialCharTok{:}\NormalTok{(}\DecValTok{70}\SpecialCharTok{+}\DecValTok{16}\NormalTok{)])}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{mse\_static }\OtherTok{=} \FunctionTok{mean}\NormalTok{((forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{static }\SpecialCharTok{{-}}\NormalTok{ y1[}\DecValTok{71}\SpecialCharTok{:}\NormalTok{(}\DecValTok{70}\SpecialCharTok{+}\DecValTok{16}\NormalTok{)])}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}MSE dynamic: \textquotesingle{}}\NormalTok{, mse\_dynamic, }\StringTok{\textquotesingle{} MSE static: \textquotesingle{}}\NormalTok{, mse\_static))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "MSE dynamic: 0.803096864172853 MSE static: 0.673256848340654"
+\end{verbatim}
+
+\hypertarget{b-2-steps-ahead-and-evaluate-using-mse}{%
+\subsubsection{\texorpdfstring{\textbf{(b)} 2-steps ahead and evaluate
+using
+MSE}{(b) 2-steps ahead and evaluate using MSE}}\label{b-2-steps-ahead-and-evaluate-using-mse}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{multi }\OtherTok{=} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{16}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (c }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{16}\NormalTok{) \{}
+\NormalTok{  simu\_fit }\OtherTok{=} \FunctionTok{arima}\NormalTok{(y1[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{(}\DecValTok{70} \SpecialCharTok{+}\NormalTok{ c)], }\AttributeTok{order =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\NormalTok{  forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{multi[c] }\OtherTok{=} \FunctionTok{predict}\NormalTok{(simu\_fit, }\AttributeTok{n.ahead =} \DecValTok{2}\NormalTok{)}\SpecialCharTok{$}\NormalTok{pred[}\DecValTok{2}\NormalTok{]}
+\NormalTok{\}}
+
+\NormalTok{mse\_multi }\OtherTok{=} \FunctionTok{mean}\NormalTok{((forecas\_simu}\SpecialCharTok{$}\NormalTok{y1}\SpecialCharTok{$}\NormalTok{multi }\SpecialCharTok{{-}}\NormalTok{ y1[}\DecValTok{71}\SpecialCharTok{:}\NormalTok{(}\DecValTok{70}\SpecialCharTok{+}\DecValTok{16}\NormalTok{)])}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}MSE multi step (2): \textquotesingle{}}\NormalTok{, mse\_multi))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "MSE multi step (2): 0.643141730155509"
+\end{verbatim}
 
 
 \end{document}

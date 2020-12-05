@@ -1,5 +1,6 @@
 from pytrends.request import TrendReq
 import pandas as pd
+import os
 
 kw_list = ["debt","color","stocks","restaurant","portfolio","inflation","housing","dow jones","revenue","economics","credit","markets","return","unemployment","money","religion","cancer","growth","investment","hedge","marriage","bonds","derivatives","headlines","profit","society","leverage","loss","cash","office","fine","stock","market","banking","crisis","happy","car","nasdaq","gains","finance","sell","invest","fed","house","metals","travel","returns","gain","default","present","holiday","water","rich","risk","gold","success","oil","war","economy","DOW JONES","chance","short","sell","lifestyle","greed","food","financial","markets","movie","nyse","ore","BUY AND HOLD","opportunity","health","short","selling","earnings","arts","culture","bubble","buy","trader","rare","earths","tourism","politics","energy","consume","consumption","freedom","dividend","world","conflict","kitchen","forex","home","crash","transaction","garden","fond","train","labor","fun","environment","ring"]
 dfList = []
@@ -15,4 +16,4 @@ for kw in kw_list:
     del df['google']
     dfList.append(df)
 dfOut = pd.concat(dfList, axis=1)
-dfOut.to_csv('dfOut_google_politics_normalized.csv')
+dfOut.to_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'dfOut_google_normalized.csv'))

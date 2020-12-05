@@ -7,6 +7,7 @@ import statsmodels.api as sm
 from sklearn.decomposition import PCA
 import random
 import pyfolio as pf
+import os
 
 def simple_time_series_outofsample_predict(df, model, test_size):
     Y = pd.DataFrame(df[df.columns[0]])
@@ -69,16 +70,16 @@ def curme_preis_stanley_moat_2013(df):
 
 if __name__ == '__main__':
     # es = mng.connect_arctic()['BBG_EOD'].read('ES1 INDEX').data
-    es = pd.read_csv(r"../data/es1.txt", sep='\t')
+    es = pd.read_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'es1.txt'), sep='\t')
     es.index = pd.to_datetime(es['date'])
     es_close = es[['PX_LAST']]
     es_close = es_close.dropna()
     es_close = pd.DataFrame(es_close['PX_LAST'].resample(rule='W-MON').last())
     es_close['PX_LAST_s1'] = es_close['PX_LAST'].shift(+1)
-    es_close['log_pct_change'] = np.log(es_close['PX_LAST'] / es_close['PX_LAST_s1'])
+    es_close['pct_change'] = (es_close['PX_LAST'] / es_close['PX_LAST_s1'] -1) *100
     del es_close['PX_LAST_s1']
     es_close = es_close.dropna()
-    google = pd.read_csv('../../../../../QuantFin/google trends/dfOut_google_politics_normalized.csv')
+    google = pd.read_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'dfOut_google_normalized.csv'))
     google.index = pd.to_datetime(google['date'])
     del google['date']
     google = google.asfreq('D')

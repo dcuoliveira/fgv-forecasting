@@ -69,7 +69,7 @@ def curme_preis_stanley_moat_2013(df):
 
 if __name__ == '__main__':
     # es = mng.connect_arctic()['BBG_EOD'].read('ES1 INDEX').data
-    es = pd.read_csv(r"es1.txt", sep='\t')
+    es = pd.read_csv(r"../data/es1.txt", sep='\t')
     es.index = pd.to_datetime(es['date'])
     es_close = es[['PX_LAST']]
     es_close = es_close.dropna()

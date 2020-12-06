@@ -62,21 +62,20 @@ def curme_preis_stanley_moat_2013(df):
     for i in range(len(asset_return)):
         rnd = random.sample([-1, 0, 1], 1)
         rnd_list.append(rnd[0])
-    asset_return_copy['random_strat'] = asset_return_copy['log_pct_change'] * rnd_list
+    asset_return_copy['random_strat'] = asset_return_copy['pct_change'] * rnd_list
     asset_return_copy = asset_return_copy.apply(lambda x: ((1 + x).cumprod()) - 1, axis=0)
     df_out['random_strat'] = asset_return_copy['random_strat']
     return df_out
 
 
 if __name__ == '__main__':
-    # es = mng.connect_arctic()['BBG_EOD'].read('ES1 INDEX').data
     es = pd.read_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'es1.txt'), sep='\t')
     es.index = pd.to_datetime(es['date'])
     es_close = es[['PX_LAST']]
     es_close = es_close.dropna()
     es_close = pd.DataFrame(es_close['PX_LAST'].resample(rule='W-MON').last())
     es_close['PX_LAST_s1'] = es_close['PX_LAST'].shift(+1)
-    es_close['pct_change'] = (es_close['PX_LAST'] / es_close['PX_LAST_s1'] -1) *100
+    es_close['pct_change'] = (es_close['PX_LAST'] / es_close['PX_LAST_s1'] -1)
     del es_close['PX_LAST_s1']
     es_close = es_close.dropna()
     google = pd.read_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'dfOut_google_normalized.csv'))
@@ -86,34 +85,22 @@ if __name__ == '__main__':
     google_shift = google.shift(+1)
     google_shift = google_shift.dropna()
 
-    df = pd.merge(es_close['log_pct_change'], google_shift, right_index=True, left_index=True)
+    df = pd.merge(es_close['pct_change'], google_shift, right_index=True, left_index=True)
     df = df.loc[:, (df != 0).any(axis=0)]
 
     ### Curme, Preis, Stanley and Moat 2013 ###
     df1 = curme_preis_stanley_moat_2013(df)
-    random = df1['random_strat']
-    df1 = df1.drop(columns=['random_strat'])
-    print(np.median(df1.iloc[len(df1)-1]))
-    print(np.mean(df1.iloc[len(df1) - 1]))
-    print(np.std(df1.iloc[len(df1) - 1]))
-    print(np.median(random))
-    print(np.mean(random))
-    print(np.std(random))
-    plt.hist(df1.iloc[len(df1)-1], bins=10)
-    plt.hist(random, bins=10)
-    plt.legend(labels=['curme', 'random'])
-    plt.show()
+    df1.to_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'df_curme.csv'))
 
     ### Huang, Rojas and Convery 2019 ###
-    # cols_to_subset = list(set(Gprediction_series) & set(cointegrated_series))
-    cols_to_subset = list(pd.Series(Gprediction_series + cointegrated_series).unique())
-    X_to_go = X5[cols_to_subset]
-    df = pd.merge(Y, X_to_go, right_index=True, left_index=True)
+    df = df1.copy()
+    df = df.drop('random_strat', axis=1)
     df_return_out = {}
     df_predict_out = {}
-    for type in ['l1', 'l2']:
+    for type in ['l2']:
         print(type)
-        for c in np.linspace(0, 1, 100):
+        for c in np.linspace(0, 1, 20):
+            print(c)
             if c == 0 or c == 1:
                 continue
             lasso_model = linear_model.LogisticRegression(penalty=type, C=c, solver='saga')
@@ -122,16 +109,16 @@ if __name__ == '__main__':
             df_lasso_out = lasso_out[1]
             df_lasso_tot = pd.concat([df_lasso_in, df_lasso_out])
             df_lasso_tot = pd.merge(es_close, df_lasso_tot['predict'], right_index=True, left_index=True)
-            df_lasso_tot[type + '_return'] = df_lasso_tot['log_pct_change'] * df_lasso_tot['predict']
-            df_lasso_tot[type + '_return'] = ((1 +  df_lasso_tot[type + '_return']).cumprod()) - 1
+            df_lasso_tot[type + '_return'] = df_lasso_tot['pct_change'] * df_lasso_tot['predict']
+            df_lasso_tot[type + '_return'] = ((1 + df_lasso_tot[type + '_return']).cumprod()) - 1
             df_return_out[type + '_' + str(c)] = df_lasso_tot[type + '_return']
             df_predict_out[type + '_' + str(c)] = df_lasso_tot['predict']
     df_return_out = pd.DataFrame.from_dict(df_return_out)
-    df_return_out.to_csv('Z:/desenv/gtrends/df_return_es_l1_l2_augmented.csv')
+    df_return_out.to_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'df_return_es_l1_l2_augmented.csv'))
     # df_return_out.plot()
     # plt.show()
     df_predict_out = pd.DataFrame.from_dict(df_predict_out)
-    df_predict_out.to_csv('Z:/desenv/gtrends/df_predict_es_l1_l2_augmented.csv')
-    series = df_predict_out[df_predict_out.columns[0]] * df['log_pct_change']
+    df_predict_out.to_csv(os.path.join(os.path.dirname(os.getcwd()), 'data', 'df_predict_es_l1_l2_augmented.csv'))
+    series = df_predict_out[df_predict_out.columns[0]] * df['pct_change']
     series.index = pd.to_datetime(series.index)
     pf.create_returns_tear_sheet(series)
